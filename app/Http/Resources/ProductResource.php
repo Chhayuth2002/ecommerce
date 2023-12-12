@@ -19,7 +19,8 @@ class ProductResource extends JsonResource
             'description' => $this->description,
             'isFeatured' => $this->is_featured,
             'isNew' => $this->is_new,
-            'image_urls' => $this->image_urls
+            'image_urls' => $this->image_urls,
+            'product_variants' => ProductVariantResource::collection($this->whenLoaded('variants'))
         ];
     }
 }

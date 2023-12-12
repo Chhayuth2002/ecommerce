@@ -16,6 +16,12 @@ class ProductVariant extends Model implements HasMedia
 
     protected $appends = ['image_urls'];
 
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
     public function getImageUrlsAttribute()
     {
         return $this->getMedia('default')->map(function ($media) {

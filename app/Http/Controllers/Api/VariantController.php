@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ProductVariantResource;
 use App\Http\Resources\VariantCollection;
 use App\Http\Resources\VariantResource;
 use App\Models\ProductVariant;
@@ -18,22 +19,17 @@ class VariantController extends Controller
         // $variants = ProductVariant::where('parent_id', null)->get();
         $productVariant = ProductVariant::with('productAttributes.attribute', 'productAttributes.option')->get();
 
-        return  VariantResource::collection($productVariant);
+        return  ProductVariantResource::collection($productVariant);
     }
-
-    // public function productVariant()
-    // {
-    //     $variants = ProductVariant::where('parent_id', null)->get();
-
-    //     return  VariantResource::collection($variants);
-    // }
 
     /**
      * Display the specified resource.
      */
-    public function show(ProductVariant $variant)
+    public function show(ProductVariant $variant, Request $request)
     {
-        return new VariantResource($variant);
+        $variant->loadMissing('productAttributes.attribute', 'productAttributes.option')->get();
+
+        return new ProductVariantResource($variant);
     }
 
     /**

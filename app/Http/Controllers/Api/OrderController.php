@@ -1,19 +1,23 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
-use App\Http\Resources\AttributeResource;
-use App\Models\Attribute;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\OrderResource;
+use App\Models\Order;
 use Illuminate\Http\Request;
 
-class AttributeController extends Controller
+class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Order $orders)
     {
-        return AttributeResource::collection(Attribute::all());
+
+        // $orders->loadMissing('orderItems');
+
+        return OrderResource::collection($orders->get());
     }
 
     /**
@@ -35,9 +39,11 @@ class AttributeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Attribute $attribute)
+    public function show(Order $order)
     {
-        return new AttributeResource($attribute);
+        $order->loadMissing('orderItems');
+
+        return new OrderResource($order);
     }
 
     /**
@@ -62,5 +68,12 @@ class AttributeController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function getOrdersByCustomer(string $customerId)
+    {
+        $orders = Order::where('customer_id', $customerId)->get();
+
+        return OrderResource::collection($orders);
     }
 }

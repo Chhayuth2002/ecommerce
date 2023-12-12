@@ -12,6 +12,11 @@ class Order extends Model
 
     protected $fillable = ['customer_id', 'number', 'total_price', 'status', 'country', 'street', 'city', 'state', 'zip', 'note'];
 
+    public function getRouteKeyName()
+    {
+        return 'number';
+    }
+
     public function customer()
     {
         return $this->belongsTo(Customer::class);

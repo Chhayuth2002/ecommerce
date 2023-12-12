@@ -12,13 +12,6 @@ class CategoryController extends Controller
 {
     public function index(Request $request)
     {
-        // $include = $request->query('include');
-
-        // if ($include) {
-        //     $categories->with('children');
-        // }
-
-        // $paginatedCategories = $categories->paginate()->appends($request->query());
         $categories = Category::with('children')->where('parent_id', null)->orderBy('name', 'asc')->get();
 
         return CategoryResource::collection($categories);

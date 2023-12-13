@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\VariantController;
 use App\Http\Controllers\Api\AttributeController;
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\OrderController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -36,14 +37,16 @@ Route::get('/variant/{variant:slug}', [VariantController::class, 'show']);
 Route::get('/attribute', [AttributeController::class, 'index']);
 Route::get('/attribute/{attribute:slug}', [AttributeController::class, 'show']);
 
-// Route::get('/order', [OrderController::class, 'index']);
-// Route::get('/order/{order:number}', [OrderController::class, 'show']);
 
-
-Route::prefix('order')->group(function () {
+Route::prefix('order')->middleware('auth:sanctum')->group(function () {
     Route::get('/', [OrderController::class, 'index']);
     Route::get('/{order:number}', [OrderController::class, 'show']);
     Route::post('/', [OrderController::class, 'store']);
-    Route::put('/{orderId}', [OrderController::class, 'show']);
+    // Route::put('/{orderId}', [OrderController::class, 'show']);
     Route::get('/customer/{id}', [OrderController::class, 'getOrdersByCustomer']);
 });
+
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');

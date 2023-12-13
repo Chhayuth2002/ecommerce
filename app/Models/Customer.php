@@ -17,18 +17,12 @@ class Customer extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['first_name', 'last_name', 'email', 'password', 'remember_token'];
-
-    public function orders()
-    {
-        return $this->hasMany(Order::class);
-    }
-
-    public function fullname()
-    {
-        return $this->first_name . ' ' . $this->last_name;
-    }
-
+    protected $fillable = [
+        'first_name',
+        'last_name',
+        'email',
+        'password'
+    ];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -46,7 +40,16 @@ class Customer extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function fullname()
+    {
+        return $this->first_name . ' ' . $this->last_name;
+    }
 }

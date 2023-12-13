@@ -31,7 +31,9 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        return new ProductResource(Product::findOrFail($id));
+        $product = Product::findOrFail($id);
+
+        return new ProductResource($product->loadMissing('variants'));
     }
 
     /**
